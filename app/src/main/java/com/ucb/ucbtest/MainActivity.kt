@@ -11,6 +11,7 @@ import com.ucb.ucbtest.home.HomeUI
 import com.ucb.ucbtest.login.LoginUI
 import com.ucb.ucbtest.navigation.AppNavigation
 import com.ucb.ucbtest.takephoto.TakePhotoUI
+import com.ucb.ucbtest.transactions.TransactionUI
 import com.ucb.ucbtest.ui.theme.UcbtestTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,7 +22,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            AppNavigation()
+            TransactionUI()
         }
     }
 }

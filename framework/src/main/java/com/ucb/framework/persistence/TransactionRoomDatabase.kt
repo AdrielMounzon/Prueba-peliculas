@@ -4,8 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 
-@Database(entities = [TransactionEntity::class], version = 1, exportSchema = false)
+@Database(entities = [TransactionEntity::class], version = 2, exportSchema = false)
+@TypeConverters(Converters::class)
 abstract class TransactionRoomDatabase : RoomDatabase() {
 
     abstract fun transactionDAO(): ITransactionDAO
@@ -20,7 +22,9 @@ abstract class TransactionRoomDatabase : RoomDatabase() {
                     context.applicationContext,
                     TransactionRoomDatabase::class.java,
                     "transaction_database"
-                ).build().also { INSTANCE = it }
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
             }
         }
     }

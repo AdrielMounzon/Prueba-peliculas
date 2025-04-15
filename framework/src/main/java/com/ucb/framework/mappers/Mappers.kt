@@ -36,7 +36,6 @@ fun MovieDto.toModel(): Movie {
 
 fun Transaction.toEntity(): TransactionEntity {
     return TransactionEntity(
-        id = this.id,
         tipo = when (this) {
             is Transaction.Income -> "Income"
             is Transaction.Expense -> "Expense"

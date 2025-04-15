@@ -6,7 +6,7 @@ import java.util.Date
 
 @Entity(tableName = "transactions")
 data class TransactionEntity(
-    @PrimaryKey val id: String,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val tipo: String,
     val nombre: String,
     val precio: Double,

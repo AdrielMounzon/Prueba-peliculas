@@ -5,11 +5,13 @@ import com.ucb.data.GithubRepository
 import com.ucb.data.LoginRepository
 import com.ucb.data.MovieRepository
 import com.ucb.data.PushNotificationRepository
+import com.ucb.data.TransactionRepository
 import com.ucb.data.datastore.ILoginDataStore
 import com.ucb.data.git.IGitRemoteDataSource
 import com.ucb.data.git.ILocalDataSource
 import com.ucb.data.movie.IMovieRemoteDataSource
 import com.ucb.data.push.IPushDataSource
+import com.ucb.data.transactions.ITransactionLocalDataSource
 import com.ucb.framework.github.GithubLocalDataSource
 import com.ucb.framework.github.GithubRemoteDataSource
 import com.ucb.framework.movie.MovieRemoteDataSource
@@ -27,8 +29,14 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 import com.ucb.framework.datastore.LoginDataSource
 import com.ucb.framework.push.FirebaseNotificationDataSource
+import com.ucb.framework.transactions.TransactionLocalDataSource
 import com.ucb.usecases.GetEmailKey
 import com.ucb.usecases.ObtainToken
+import com.ucb.usecases.RegisterIncome
+import com.ucb.usecases.RegisterExpense
+import com.ucb.usecases.ListTransactions
+import com.ucb.usecases.DeleteTransaction
+import com.ucb.usecases.GetBalance
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -131,4 +139,61 @@ object AppModule {
     fun provideIPushDataSource(): IPushDataSource {
         return FirebaseNotificationDataSource()
     }
+
+    @Provides
+    @Singleton
+    fun provideTransactionLocalDataSource(
+        @ApplicationContext context: Context
+    ): ITransactionLocalDataSource {
+        return TransactionLocalDataSource(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTransactionRepository(
+        localDataSource: ITransactionLocalDataSource
+    ): TransactionRepository {
+        return TransactionRepository(localDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRegisterIncome(
+        repository: TransactionRepository
+    ): RegisterIncome {
+        return RegisterIncome(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRegisterExpense(
+        repository: TransactionRepository
+    ): RegisterExpense {
+        return RegisterExpense(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideListTransactions(
+        repository: TransactionRepository
+    ): ListTransactions {
+        return ListTransactions(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeleteTransaction(
+        repository: TransactionRepository
+    ): DeleteTransaction {
+        return DeleteTransaction(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetBalance(
+        repository: TransactionRepository
+    ): GetBalance {
+        return GetBalance(repository)
+    }
+
 }
