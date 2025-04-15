@@ -6,7 +6,7 @@ import com.ucb.domain.Transaction.Expense
 import com.ucb.domain.Transaction.Income
 
 class TransactionRepository(
-    val localDataSource: ITransactionLocalDataSource
+    private val localDataSource: ITransactionLocalDataSource
 ) {
 
     suspend fun registerIncome(income: Income) {
@@ -18,14 +18,14 @@ class TransactionRepository(
     }
 
     suspend fun getAllTransactions(): List<Transaction> {
-        return localDataSource.getAllTransactions().sortedByDescending { it.fecha }
+        return localDataSource.getAllTransactions()
     }
 
     suspend fun deleteTransaction(transactionId: String) {
         localDataSource.deleteTransaction(transactionId)
     }
 
-    suspend fun getTransactions(): List<Transaction> {
-        return localDataSource.getTransactions()
+    suspend fun getBalance(): Double {
+        return localDataSource.getBalance()
     }
 }

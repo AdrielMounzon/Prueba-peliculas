@@ -5,6 +5,8 @@ import com.ucb.domain.Movie
 import com.ucb.framework.dto.AvatarResponseDto
 import com.ucb.framework.dto.MovieDto
 import com.ucb.framework.persistence.GitAccount
+import com.ucb.domain.Transaction
+import com.ucb.framework.persistence.TransactionEntity
 
 fun AvatarResponseDto.toModel(): Gitalias {
     return Gitalias(
@@ -30,4 +32,38 @@ fun MovieDto.toModel(): Movie {
         overview = overview,
         posterPath = posterPath
     )
+}
+
+fun Transaction.toEntity(): TransactionEntity {
+    return TransactionEntity(
+        id = this.id,
+        tipo = when (this) {
+            is Transaction.Income -> "Income"
+            is Transaction.Expense -> "Expense"
+        },
+        nombre = this.nombre,
+        precio = this.precio,
+        descripcion = this.descripcion,
+        fecha = this.fecha
+    )
+}
+
+fun TransactionEntity.toModel(): Transaction {
+    return when (this.tipo) {
+        "Income" -> Transaction.Income(
+            id = this.id,
+            nombre = this.nombre,
+            precio = this.precio,
+            descripcion = this.descripcion,
+            fecha = this.fecha
+        )
+        "Expense" -> Transaction.Expense(
+            id = this.id,
+            nombre = this.nombre,
+            precio = this.precio,
+            descripcion = this.descripcion,
+            fecha = this.fecha
+        )
+        else -> throw IllegalArgumentException("Tipo desconocido")
+    }
 }

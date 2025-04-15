@@ -9,5 +9,5 @@ interface ITransactionLocalDataSource {
     suspend fun  registerExpense(expense: Expense)
     suspend fun  getAllTransactions(): List<Transaction>
     suspend fun  deleteTransaction(transactionId: String)
-    suspend fun  getTransactions(): List<Transaction>
+    suspend fun  getBalance(): Double
 }
