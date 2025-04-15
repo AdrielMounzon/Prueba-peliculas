@@ -78,4 +78,8 @@ class TransactionViewModel @Inject constructor(
             }
         }
     }
+
+    fun fetchAllTransactions() {
+        loadTransactions()
+    }
 }

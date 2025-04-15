@@ -19,6 +19,9 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.net.URLDecoder
 import java.net.URLEncoder
+import com.ucb.ucbtest.transactions.TransactionsListUI
+import com.ucb.ucbtest.transactions.RegisterTransactionUI
+
 
 @Composable
 fun AppNavigation() {
@@ -26,7 +29,7 @@ fun AppNavigation() {
 
     NavHost(
         navController = navController,
-        startDestination = Screen.LoginScreen.route,
+        startDestination = Screen.TransactionsListScreen.route,
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None },
         popEnterTransition = { EnterTransition.None },
@@ -85,6 +88,18 @@ fun AppNavigation() {
         composable(Screen.CounterScreen.route) {
             CounterUI()
         }
+        composable(Screen.TransactionsListScreen.route) {
+            TransactionsListUI(onRegisterClick = {
+                navController.navigate(Screen.RegisterTransactionScreen.route)
+            })
+        }
+
+        composable(Screen.RegisterTransactionScreen.route) {
+            RegisterTransactionUI(onBackToList = {
+                navController.navigate(Screen.TransactionsListScreen.route)
+            })
+        }
+
 
     }
 
