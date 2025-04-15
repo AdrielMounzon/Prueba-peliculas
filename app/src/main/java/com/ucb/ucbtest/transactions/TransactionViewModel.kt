@@ -49,8 +49,25 @@ class TransactionViewModel @Inject constructor(
     fun registerExpenseTransaction(expense: Transaction.Expense) {
         viewModelScope.launch {
             try {
+                val transactions = withContext(Dispatchers.IO) { getAllTransactions.invoke() }
+
+                val totalIngresos = transactions
+                    .filterIsInstance<Transaction.Income>()
+                    .sumOf { it.precio }
+
+                val totalEgresos = transactions
+                    .filterIsInstance<Transaction.Expense>()
+                    .sumOf { it.precio }
+
+                val balance = totalIngresos - totalEgresos
+
+                if (expense.precio > balance) {
+                    com.ucb.ucbtest.service.Util.sendNotificatión(context)
+                }
+
                 registerExpense.invoke(expense)
-                loadTransactions()  // Refresh the list
+                loadTransactions()
+
             } catch (e: Exception) {
                 _state.value = TransactionState.Error("Error registering expense: ${e.message}")
             }
